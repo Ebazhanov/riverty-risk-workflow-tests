@@ -18,8 +18,6 @@ public class RiskDecisionApiTests
     {
         _externalMock = new ExternalServicesMock();
         _externalMock.Start();
-
-     // Initialize HTTP client (in a real project, WebApplicationFactory is used here)
         _client = new HttpClient { BaseAddress = new Uri(_externalMock.Url) };
     }
 
@@ -31,10 +29,10 @@ public class RiskDecisionApiTests
         HttpStatusCode expectedCode)
     {
         // Arrange
-        const string customerId = "user_test_123";
-        _externalMock.SetupCreditRatingResponse(customerId, creditScore);
+        const string customerId = "usr_berlin_892";
+        _externalMock.SetupCreditRatingResponse(creditScore);
 
-        var request = new RiskEvaluationRequest(customerId, 199.99m, "EUR");
+        var request = new RiskEvaluationRequest(customerId, 100.00m, "EUR");
 
         // Act
         var response = await _client.PostAsJsonAsync($"/v1/credit-rating/{customerId}", request);
@@ -44,6 +42,7 @@ public class RiskDecisionApiTests
 
         var result = await response.Content.ReadFromJsonAsync<RiskEvaluationResponse>();
         result.Should().NotBeNull();
+        result!.Status.Should().Be(expectedStatus);
     }
 
     [OneTimeTearDown]

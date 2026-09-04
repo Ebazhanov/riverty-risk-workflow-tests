@@ -3,9 +3,9 @@
 ## 🧪 Risk Decision Workflow — Test Execution Matrix
 
 #### TC-RISK-001: High Credit Score Approval
-- [ ] Approved Decision for Creditworthy Customer
+- [x] Approved Decision for Creditworthy Customer
 #### TC-RISK-002: Hard Decline for Low Credit Score
-- [ ] Automatic Decline for Score Below Threshold
+- [x] Automatic Decline for Score Below Threshold
 #### TC-RISK-003: Boundary Score Evaluation
 - [ ] Approval Test at Exact Score Boundary (700 Points)
 #### TC-RISK-004: Credit Limit Exceeded
