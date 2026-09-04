@@ -15,3 +15,19 @@
 - [ ] Graceful Fallback to Manual Review on External Service Latency
 #### [TC-RISK-006: Invalid Bank Details & IBAN Validation](https://docs.riverty.com/bnpl/api_reference/#section/Errors)
 - [ ] Input Rejection on Malformed Account Parameters
+
+---
+
+## ⚡ Performance & SLA Validation (k6)
+
+The suite includes load testing for the Risk Decision Workflow to ensure sub-second response times under concurrent load.
+
+* **SLA Threshold:** 95% of API requests must complete in **< 500ms** (`p(95) < 500`).
+* **Error Rate Target:** Less than **1%** failure rate under peak traffic.
+
+### Local Execution
+
+Run the performance test script using [k6](https://k6.io/):
+
+```fish
+k6 run performance/risk-load-test.js

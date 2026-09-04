@@ -1,0 +1,35 @@
+name: Performance Testing Pipeline
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ "main" ]
+    paths:
+      - 'performance/**'
+
+jobs:
+  k6-load-test:
+    name: Run k6 Load & SLA Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Run k6 Performance Test
+        uses: grafana/k6-action@v0.3.1
+        with:
+          filename: performance/risk-load-test.js
+          flags: --out json=k6-results.json
+        env:
+          TARGET_URL: 'http://localhost:5000'
+
+      - name: Publish k6 Summary to GitHub Actions
+        if: always()
+        run: |
+          echo "## ⚡ k6 Performance Test Summary" >> $GITHUB_STEP_SUMMARY
+          echo "### SLA & Thresholds" >> $GITHUB_STEP_SUMMARY
+          echo "* **Response Time (p95):** < 500ms" >> $GITHUB_STEP_SUMMARY
+          echo "* **Target Error Rate:** < 1%" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "✅ Performance test completed. Review step logs for detailed execution metrics." >> $GITHUB_STEP_SUMMARY
