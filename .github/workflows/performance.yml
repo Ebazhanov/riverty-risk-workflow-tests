@@ -19,8 +19,8 @@ jobs:
         with:
           dotnet-version: '8.0.x'
 
-      - name: Install WireMock.Net CLI
-        run: dotnet tool install --global WireMock.Net.CLI
+      - name: Install WireMock.Net StandAlone CLI
+        run: dotnet tool install --global WireMock.Net.StandAlone
 
       - name: Start Background Mock Server
         run: |
