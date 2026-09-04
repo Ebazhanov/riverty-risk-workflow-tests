@@ -3,15 +3,15 @@
 [![CI Pipeline](https://github.com/Ebazhanov/riverty-risk-workflow-tests/actions/workflows/ci.yml/badge.svg)](https://github.com/Ebazhanov/riverty-risk-workflow-tests/actions/workflows/ci.yml)
 
 ### 🧪 Risk Decision Workflow — Test Execution Matrix
-#### TC-RISK-001: High Credit Score Approval
+#### [TC-RISK-001: High Credit Score Approval](https://docs.riverty.com/bnpl/api_reference/#tag/Authorize)
 - [x] Approved Decision for Creditworthy Customer
-#### TC-RISK-002: Hard Decline for Low Credit Score
+#### [TC-RISK-002: Hard Decline for Low Credit Score](https://docs.riverty.com/bnpl/api_reference/#tag/Authorize)
 - [x] Automatic Decline for Score Below Threshold
-#### TC-RISK-003: Boundary Score Evaluation
+#### [TC-RISK-003: Boundary Score Evaluation](https://docs.riverty.com/bnpl/api_reference/)
 - [ ] Approval Test at Exact Score Boundary (700 Points)
-#### TC-RISK-004: Credit Limit Exceeded
+#### [TC-RISK-004: Credit Limit Exceeded](https://docs.riverty.com/bnpl/api_reference/)
 - [ ] Transaction Decline Due to Insufficient Credit Limit
-#### TC-RISK-005: Downstream API Timeout & Resilience
+#### [TC-RISK-005: Downstream API Timeout & Resilience](https://docs.riverty.com/bnpl/api_reference/#section/Errors)
 - [ ] Graceful Fallback to Manual Review on External Service Latency
-#### TC-RISK-006: Invalid Bank Details & IBAN Validation
+#### [TC-RISK-006: Invalid Bank Details & IBAN Validation](https://docs.riverty.com/bnpl/api_reference/#section/Errors)
 - [ ] Input Rejection on Malformed Account Parameters
