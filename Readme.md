@@ -1,7 +1,8 @@
-# Riverty Risk Decision Workflow — SDET Test Automation Suite
+## Riverty Risk Decision Workflow — SDET Test Automation Suite
 
-## 🧪 Risk Decision Workflow — Test Execution Matrix
+[![CI Pipeline](https://github.com/Ebazhanov/riverty-risk-workflow-tests/actions/workflows/ci.yml/badge.svg)](https://github.com/Ebazhanov/riverty-risk-workflow-tests/actions/workflows/ci.yml)
 
+### 🧪 Risk Decision Workflow — Test Execution Matrix
 #### TC-RISK-001: High Credit Score Approval
 - [x] Approved Decision for Creditworthy Customer
 #### TC-RISK-002: Hard Decline for Low Credit Score
