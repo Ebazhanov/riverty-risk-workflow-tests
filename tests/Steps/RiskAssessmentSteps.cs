@@ -8,7 +8,7 @@ using Riverty.RiskWorkflow.Tests.Tests;
 namespace Riverty.RiskWorkflow.Tests.Steps;
 
 [Binding]
-public class RiskAssessmentSteps
+public sealed class RiskAssessmentSteps
 {
     private RiskDecisionApiClient _apiClient = null!;
     private HttpResponseMessage _response = null!;

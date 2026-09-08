@@ -7,9 +7,9 @@ namespace Riverty.RiskWorkflow.Tests.Tests;
 [TestFixture]
 public abstract class BaseTest
 {
-    public static PostgreSqlContainer DbContainer { get; set; } = null!;
-    public static ExternalServicesMock WireMockServer { get; set; } = null!;
-    public static HttpClient HttpClient { get; set; } = null!;
+    public static PostgreSqlContainer DbContainer { get; private set; } = null!;
+    public static ExternalServicesMock WireMockServer { get; private set; } = null!;
+    public static HttpClient HttpClient { get; private set; } = null!;
 
     [OneTimeSetUp]
     public static async Task OneTimeSetUp()
@@ -49,7 +49,11 @@ public abstract class BaseTest
     public static async Task OneTimeTearDown()
     {
         WireMockServer?.Stop();
-        if (DbContainer != null) await DbContainer.DisposeAsync().AsTask();
         HttpClient?.Dispose();
+
+        if (DbContainer != null)
+        {
+            await DbContainer.DisposeAsync();
+        }
     }
 }

@@ -28,7 +28,7 @@
     <PackageReference Include="FluentAssertions" Version="6.12.1" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
 
-    <!-- Static Analysis & Linting Package -->
+    <!-- Static Analysis & Linting -->
     <PackageReference Include="Roslynator.Analyzers" Version="4.12.4">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
