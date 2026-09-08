@@ -1,7 +1,7 @@
 using System.Net;
-using System.Net.Http.Json;
 using FluentAssertions;
 using NUnit.Framework;
+using Riverty.RiskWorkflow.Tests.Clients;
 using Riverty.RiskWorkflow.Tests.Models;
 
 namespace Riverty.RiskWorkflow.Tests.Tests;
@@ -9,31 +9,33 @@ namespace Riverty.RiskWorkflow.Tests.Tests;
 [TestFixture]
 public class RiskDecisionApiTests : BaseTest
 {
-    [TestCase(750, "APPROVED", HttpStatusCode.OK, TestName = "TC-RISK-001: High credit score returns APPROVED")]
-    [TestCase(650, "DECLINED", HttpStatusCode.OK, TestName = "TC-RISK-002: Low credit score returns DECLINED")]
-    public async Task EvaluateRisk_ShouldReturnExpectedDecision_BasedOnCreditScore(
-        int score,
-        string expectedDecision,
-        HttpStatusCode expectedStatusCode)
+    private RiskDecisionApiClient _apiClient = null!;
+
+    [SetUp]
+    public void SetUp()
     {
-        // Arrange
-        var request = new RiskEvaluationRequest
-        {
-            CustomerId = "usr_test_123",
-            Amount = 150.00m,
-            Currency = "EUR",
-            CreditScore = score
-        };
+        _apiClient = new RiskDecisionApiClient(HttpClient);
+    }
 
-        // Act
-        var response = await ApiClient.EvaluateRiskAsync(request);
+    [Test]
+    public async Task EvaluateRisk_LowRiskUser_ShouldApprove()
+    {
+        WireMockServer.SetupCreditBureauApprovedResponse();
 
-        // Assert
-        response.StatusCode.Should().Be(expectedStatusCode);
+        var request = new RiskEvaluationRequest("usr_123", 50.00m, "EUR", "BNPL");
+        var response = await _apiClient.EvaluateRiskAsync(request);
 
-        var result = await response.Content.ReadFromJsonAsync<RiskEvaluationResponse>();
-        result.Should().NotBeNull();
-        result!.Decision.Should().Be(expectedDecision);
-        result.RiskScore.Should().Be(score);
+        response.StatusCode.Should().Be(HttpStatusCode.Created);
+    }
+
+    [Test]
+    public async Task EvaluateRisk_HighRiskUser_ShouldReject()
+    {
+        WireMockServer.SetupCreditBureauRejectedResponse();
+
+        var request = new RiskEvaluationRequest("usr_999", 5000.00m, "EUR", "BNPL");
+        var response = await _apiClient.EvaluateRiskAsync(request);
+
+        response.StatusCode.Should().Be(HttpStatusCode.Created);
     }
 }

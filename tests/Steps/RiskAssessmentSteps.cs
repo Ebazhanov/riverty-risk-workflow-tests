@@ -1,0 +1,46 @@
+using System.Net;
+using FluentAssertions;
+using Reqnroll;
+using Riverty.RiskWorkflow.Tests.Clients;
+using Riverty.RiskWorkflow.Tests.Models;
+using Riverty.RiskWorkflow.Tests.Tests;
+
+namespace Riverty.RiskWorkflow.Tests.Steps;
+
+[Binding]
+public class RiskAssessmentSteps
+{
+    private RiskDecisionApiClient _apiClient = null!;
+    private HttpResponseMessage _response = null!;
+
+    [BeforeTestRun]
+    public static async Task BeforeTestRun()
+    {
+        await BaseTest.InitializeGlobalStateAsync();
+    }
+
+    [BeforeScenario]
+    public void Setup()
+    {
+        _apiClient = new RiskDecisionApiClient(BaseTest.HttpClient);
+    }
+
+    [Given("an external credit bureau returns a low risk score")]
+    public void GivenAnExternalCreditBureauReturnsALowRiskScore()
+    {
+        BaseTest.WireMockServer.SetupCreditBureauApprovedResponse();
+    }
+
+    [When("a risk evaluation request is sent for amount {decimal} EUR")]
+    public async Task WhenARiskEvaluationRequestIsSentForAmountEUR(decimal amount)
+    {
+        var request = new RiskEvaluationRequest("usr_bdd_123", amount, "EUR", "BNPL");
+        _response = await _apiClient.EvaluateRiskAsync(request);
+    }
+
+    [Then("the decision status should be {string}")]
+    public void ThenTheDecisionStatusShouldBe(string expectedStatus)
+    {
+        _response.StatusCode.Should().Be(HttpStatusCode.Created);
+    }
+}

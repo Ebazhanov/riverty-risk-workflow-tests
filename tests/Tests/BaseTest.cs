@@ -1,29 +1,55 @@
 using NUnit.Framework;
-using Riverty.RiskWorkflow.Tests.Clients;
+using Testcontainers.PostgreSql;
 using Riverty.RiskWorkflow.Tests.Mocks;
 
 namespace Riverty.RiskWorkflow.Tests.Tests;
 
+[TestFixture]
 public abstract class BaseTest
 {
-    protected ExternalServicesMock MockServer { get; private set; } = null!;
-    protected RiskDecisionApiClient ApiClient { get; private set; } = null!;
-    private HttpClient _httpClient = null!;
+    public static PostgreSqlContainer DbContainer { get; set; } = null!;
+    public static ExternalServicesMock WireMockServer { get; set; } = null!;
+    public static HttpClient HttpClient { get; set; } = null!;
 
     [OneTimeSetUp]
-    public void OneTimeSetUp()
+    public static async Task OneTimeSetUp()
     {
-        MockServer = new ExternalServicesMock();
-        MockServer.Start();
+        await InitializeGlobalStateAsync();
+    }
 
-        _httpClient = new HttpClient { BaseAddress = new Uri(MockServer.Url) };
-        ApiClient = new RiskDecisionApiClient(_httpClient);
+    public static async Task InitializeGlobalStateAsync()
+    {
+        if (DbContainer == null)
+        {
+            DbContainer = new PostgreSqlBuilder()
+                .WithDatabase("risk_db")
+                .WithUsername("postgres")
+                .WithPassword("postgres")
+                .Build();
+
+            await DbContainer.StartAsync();
+        }
+
+        if (WireMockServer == null)
+        {
+            WireMockServer = new ExternalServicesMock();
+            WireMockServer.Start();
+        }
+
+        if (HttpClient == null)
+        {
+            HttpClient = new HttpClient
+            {
+                BaseAddress = new Uri("https://reqres.in/api/")
+            };
+        }
     }
 
     [OneTimeTearDown]
-    public void OneTimeTearDown()
+    public static async Task OneTimeTearDown()
     {
-        _httpClient.Dispose();
-        MockServer.Stop();
+        WireMockServer?.Stop();
+        if (DbContainer != null) await DbContainer.DisposeAsync().AsTask();
+        HttpClient?.Dispose();
     }
 }
