@@ -7,6 +7,14 @@
     <RootNamespace>Riverty.RiskWorkflow.Tests</RootNamespace>
     <ReqnrollDefaultNamespace>Riverty.RiskWorkflow.Tests</ReqnrollDefaultNamespace>
     <NuGetAudit>false</NuGetAudit>
+
+    <!-- Code Quality & Linting Configuration -->
+    <EnableNETAnalyzers>true</EnableNETAnalyzers>
+    <AnalysisLevel>latest-recommended</AnalysisLevel>
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+
+    <!-- Suppress underscore warning for test method names -->
+    <NoWarn>$(NoWarn);CA1707</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
@@ -19,5 +27,11 @@
     <PackageReference Include="Testcontainers.PostgreSql" Version="3.10.0" />
     <PackageReference Include="FluentAssertions" Version="6.12.1" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+
+    <!-- Static Analysis & Linting Package -->
+    <PackageReference Include="Roslynator.Analyzers" Version="4.12.4">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
   </ItemGroup>
 </Project>

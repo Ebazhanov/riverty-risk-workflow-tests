@@ -3,17 +3,10 @@ using Riverty.RiskWorkflow.Tests.Models;
 
 namespace Riverty.RiskWorkflow.Tests.Clients;
 
-public class RiskDecisionApiClient
+public class RiskDecisionApiClient(HttpClient client)
 {
-    private readonly HttpClient _client;
-
-    public RiskDecisionApiClient(HttpClient client)
-    {
-        _client = client;
-    }
-
     public async Task<HttpResponseMessage> EvaluateRiskAsync(RiskEvaluationRequest request)
     {
-        return await _client.PostAsJsonAsync("users", request);
+        return await client.PostAsJsonAsync("users", request);
     }
 }

@@ -26,7 +26,7 @@ public class RiskAssessmentSteps
     }
 
     [Given("an external credit bureau returns a low risk score")]
-    public void GivenAnExternalCreditBureauReturnsALowRiskScore()
+    public static void GivenAnExternalCreditBureauReturnsALowRiskScore()
     {
         BaseTest.WireMockServer.SetupCreditBureauApprovedResponse();
     }
