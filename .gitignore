@@ -2,3 +2,4 @@
 obj
 bin
 *.feature.cs
+*.DotSettings
