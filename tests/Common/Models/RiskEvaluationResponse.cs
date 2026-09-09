@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace Riverty.RiskWorkflow.Tests.Models;
+namespace Riverty.RiskWorkflow.Tests.Common.Models;
 
 public record RiskEvaluationResponse(
     [property: JsonPropertyName("status")] string? Status = null,

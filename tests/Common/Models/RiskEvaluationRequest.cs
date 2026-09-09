@@ -1,4 +1,4 @@
-namespace Riverty.RiskWorkflow.Tests.Models;
+namespace Riverty.RiskWorkflow.Tests.Common.Models;
 
 public record RiskEvaluationRequest(
     string UserId,

@@ -1,5 +1,5 @@
 using System.Net.Http.Json;
-using Riverty.RiskWorkflow.Tests.Models;
+using Riverty.RiskWorkflow.Tests.Common.Models;
 
 namespace Riverty.RiskWorkflow.Tests.Clients;
 

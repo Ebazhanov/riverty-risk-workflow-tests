@@ -1,8 +1,8 @@
-using System.Text;
 using System.Net.Http.Headers;
+using System.Text;
 using Allure.Net.Commons;
 
-namespace Riverty.RiskWorkflow.Tests.Clients;
+namespace Riverty.RiskWorkflow.Tests.Common;
 
 /// <summary>
 /// HTTP Message Handler that automatically logs API request and response payloads as attachments in Allure reports.

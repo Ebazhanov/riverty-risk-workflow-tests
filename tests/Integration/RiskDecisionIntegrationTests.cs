@@ -6,15 +6,15 @@ using Allure.Net.Commons;
 using FluentAssertions;
 using NUnit.Framework;
 using Riverty.RiskWorkflow.Tests.Clients;
-using Riverty.RiskWorkflow.Tests.Models;
+using Riverty.RiskWorkflow.Tests.Common.Models;
 
-namespace Riverty.RiskWorkflow.Tests.Tests;
+namespace Riverty.RiskWorkflow.Tests.Integration;
 
 [TestFixture]
 [AllureNUnit]
 [AllureSuite("Risk Decision API Suite")]
 [AllureOwner("Evgenii Bazhanov")]
-public class RiskDecisionApiTests : BaseTest
+public class RiskDecisionIntegrationTests : BaseTest
 {
     private RiskDecisionApiClient _apiClient = null!;
 

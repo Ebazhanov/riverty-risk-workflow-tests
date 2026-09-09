@@ -1,9 +1,9 @@
 using NUnit.Framework;
 using Testcontainers.PostgreSql;
-using Riverty.RiskWorkflow.Tests.Clients;
-using Riverty.RiskWorkflow.Tests.Mocks;
+using Riverty.RiskWorkflow.Tests.Common;
+using Riverty.RiskWorkflow.Tests.Integration.Mocks;
 
-namespace Riverty.RiskWorkflow.Tests.Tests;
+namespace Riverty.RiskWorkflow.Tests.Integration;
 
 [TestFixture]
 public abstract class BaseTest
@@ -31,36 +31,47 @@ public abstract class BaseTest
             await DbContainer.StartAsync();
         }
 
-        if (WireMockServer is null)
+        // Start WireMock if missing or stopped
+        if (WireMockServer is null || !WireMockServer.IsStarted)
         {
             WireMockServer = new ExternalServicesMock();
             WireMockServer.Start();
+            RecreateHttpClient();
         }
-
-        if (HttpClient is null)
+        else if (HttpClient is null)
         {
-            var primaryHandler = new HttpClientHandler();
-            var loggingHandler = new AllureLoggingHandler(primaryHandler);
-
-            // Using char '/' satisfies CA1866 (perf) and CA1310 (culture invariance)
-            var baseUrl = WireMockServer.Url.EndsWith('/') ? WireMockServer.Url : $"{WireMockServer.Url}/";
-
-            HttpClient = new HttpClient(loggingHandler)
-            {
-                BaseAddress = new Uri(baseUrl)
-            };
+            RecreateHttpClient();
         }
+    }
+
+    private static void RecreateHttpClient()
+    {
+        HttpClient?.Dispose();
+
+        var primaryHandler = new HttpClientHandler();
+        var loggingHandler = new AllureLoggingHandler(primaryHandler);
+
+        var baseUrl = WireMockServer!.Url.EndsWith('/') ? WireMockServer.Url : $"{WireMockServer.Url}/";
+
+        HttpClient = new HttpClient(loggingHandler)
+        {
+            BaseAddress = new Uri(baseUrl)
+        };
     }
 
     [OneTimeTearDown]
     public static async Task OneTimeTearDown()
     {
         WireMockServer?.Stop();
+        WireMockServer = null; // Forces re-creation on subsequent test suite runs
+
         HttpClient?.Dispose();
+        HttpClient = null;
 
         if (DbContainer is not null)
         {
             await DbContainer.DisposeAsync();
+            DbContainer = null;
         }
     }
 }

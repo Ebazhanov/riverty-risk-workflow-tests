@@ -2,12 +2,16 @@ using WireMock.RequestBuilders;
 using WireMock.ResponseBuilders;
 using WireMock.Server;
 
-namespace Riverty.RiskWorkflow.Tests.Mocks;
+namespace Riverty.RiskWorkflow.Tests.Integration.Mocks;
 
 public class ExternalServicesMock
 {
     private WireMockServer? _server;
+    
     public string Url => _server?.Url ?? string.Empty;
+
+    // Checks if the underlying WireMockServer is active and running
+    public bool IsStarted => _server is { IsStarted: true };
 
     public void Start()
     {
@@ -38,5 +42,6 @@ public class ExternalServicesMock
     {
         _server?.Stop();
         _server?.Dispose();
+        _server = null;
     }
 }
