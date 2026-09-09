@@ -22,17 +22,17 @@ public sealed class RiskAssessmentSteps
     [BeforeScenario]
     public void Setup()
     {
-        _apiClient = new RiskDecisionApiClient(BaseTest.HttpClient);
+        _apiClient = new RiskDecisionApiClient(BaseTest.HttpClient!);
     }
 
     [Given("an external credit bureau returns a low risk score")]
     public static void GivenAnExternalCreditBureauReturnsALowRiskScore()
     {
-        BaseTest.WireMockServer.SetupCreditBureauApprovedResponse();
+        BaseTest.WireMockServer!.SetupCreditBureauApprovedResponse();
     }
 
     [When("a risk evaluation request is sent for amount {decimal} EUR")]
-    public async Task WhenARiskEvaluationRequestIsSentForAmountEUR(decimal amount)
+    public async Task WhenARiskEvaluationRequestIsSentForAmountEur(decimal amount)
     {
         var request = new RiskEvaluationRequest("usr_bdd_123", amount, "EUR", "BNPL");
         _response = await _apiClient.EvaluateRiskAsync(request);

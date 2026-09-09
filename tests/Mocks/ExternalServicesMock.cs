@@ -17,21 +17,21 @@ public class ExternalServicesMock
     public void SetupCreditBureauApprovedResponse()
     {
         _server?
-            .Given(Request.Create().WithPath("/v1/credit-check").UsingPost())
+            .Given(Request.Create().WithPath("/users").UsingPost())
             .RespondWith(Response.Create()
-                .WithStatusCode(200)
+                .WithStatusCode(201)
                 .WithHeader("Content-Type", "application/json")
-                .WithBody("{\"score\": 10, \"blacklisted\": false}"));
+                .WithBody("{\"userId\":\"usr_123\",\"amount\":50.00,\"status\":\"APPROVED\"}"));
     }
 
     public void SetupCreditBureauRejectedResponse()
     {
         _server?
-            .Given(Request.Create().WithPath("/v1/credit-check").UsingPost())
+            .Given(Request.Create().WithPath("/users").UsingPost())
             .RespondWith(Response.Create()
-                .WithStatusCode(200)
+                .WithStatusCode(201)
                 .WithHeader("Content-Type", "application/json")
-                .WithBody("{\"score\": 90, \"blacklisted\": true}"));
+                .WithBody("{\"userId\":\"usr_999\",\"amount\":5000.00,\"status\":\"REJECTED\"}"));
     }
 
     public void Stop()

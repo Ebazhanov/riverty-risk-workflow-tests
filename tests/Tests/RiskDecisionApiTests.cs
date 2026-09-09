@@ -21,7 +21,7 @@ public class RiskDecisionApiTests : BaseTest
     [SetUp]
     public void SetUp()
     {
-        _apiClient = new RiskDecisionApiClient(HttpClient);
+        _apiClient = new RiskDecisionApiClient(HttpClient!);
     }
 
     [Test]
@@ -37,7 +37,7 @@ public class RiskDecisionApiTests : BaseTest
 
         AllureApi.Step("Given an external credit bureau returns a low risk score", () =>
         {
-            WireMockServer.SetupCreditBureauApprovedResponse();
+            WireMockServer!.SetupCreditBureauApprovedResponse();
             request = new RiskEvaluationRequest("usr_123", 50.00m, "EUR", "BNPL");
         });
 
@@ -70,7 +70,7 @@ public class RiskDecisionApiTests : BaseTest
 
         AllureApi.Step("Given an external credit bureau returns a high risk score", () =>
         {
-            WireMockServer.SetupCreditBureauRejectedResponse();
+            WireMockServer!.SetupCreditBureauRejectedResponse();
             request = new RiskEvaluationRequest("usr_999", 5000.00m, "EUR", "BNPL");
         });
 
