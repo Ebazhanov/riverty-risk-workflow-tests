@@ -1,5 +1,20 @@
-.idea
-obj
-bin
-*.feature.cs
+# Rider & JetBrains IDE settings
+.idea/
 *.DotSettings
+*.DotSettings.user
+
+# Visual Studio & C# Build artifacts
+bin/
+obj/
+*.user
+*.userosscache
+*.sln.docstates
+
+# OS Generated files
+.DS_Store
+Thumbs.db
+
+# Test coverage & results
+TestResults/
+*.trx
+*.coverage
