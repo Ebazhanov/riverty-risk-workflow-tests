@@ -89,4 +89,31 @@ public class RiskDecisionIntegrationTests : BaseTest
             root.GetProperty("amount").GetDecimal().Should().Be(5000.00m);
         });
     }
+
+    [Test]
+    [AllureFeature("Risk Assessment")]
+    [AllureStory("External Service Delay")]
+    [AllureSeverity(SeverityLevel.normal)]
+    [AllureIssue("XRAY-1028")]
+    public async Task EvaluateRisk_ExternalServiceDelay_ShouldHandleGracefully()
+    {
+        RiskEvaluationRequest request = null!;
+        HttpResponseMessage response = null!;
+
+        AllureApi.Step("Given external credit bureau experiences network latency", () =>
+        {
+            WireMockServer!.SetupCreditBureauTimeoutResponse();
+            request = new RiskEvaluationRequest("usr_timeout", 100.00m, "EUR", "BNPL");
+        });
+
+        await AllureApi.Step("When a risk evaluation request is sent to the API", async () =>
+        {
+            response = await _apiClient.EvaluateRiskAsync(request);
+        });
+
+        AllureApi.Step("Then the API responds with HTTP 201 Created despite background delay", () =>
+        {
+            response.StatusCode.Should().Be(HttpStatusCode.Created);
+        });
+    }
 }

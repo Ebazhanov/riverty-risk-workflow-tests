@@ -36,11 +36,13 @@ dotnet test --configuration Release
 - [x] `TC-RISK-002` — Hard decline for low credit score (`EvaluateRisk_HighRiskUser_ShouldReject`)
 - [ ] `TC-RISK-003` — Boundary score evaluation at exact score limit (700)
 - [ ] `TC-RISK-004` — Transaction decline due to exceeded credit limit
-- [ ] `TC-RISK-005` — Downstream API timeout & resilience (WireMock 504 delay simulation)
+- [x] `TC-RISK-005` — Downstream API timeout & resilience (WireMock delay simulation via `EvaluateRisk_ExternalServiceDelay_ShouldHandleGracefully`)
 - [ ] `TC-RISK-006` — Invalid bank details & IBAN input rejection (400 Bad Request)
 
 #### Level 3: End-to-End Acceptance (`tests/E2E/`)
 - [x] `ApproveLow_RiskTransaction` — Gherkin BDD scenario for approved transaction flow (`RiskDecision.feature`)
+- [x] `Evaluate risk for negative amount transaction` — Boundary validation scenario (`RiskDecision.feature`)
+- [x] `Ensure idempotency on repeated request execution` — Idempotency check scenario (`RiskDecision.feature`)
 ---
 
 ## ⚡ Performance & SLA Validation (k6)

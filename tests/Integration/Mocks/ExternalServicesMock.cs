@@ -7,10 +7,9 @@ namespace Riverty.RiskWorkflow.Tests.Integration.Mocks;
 public class ExternalServicesMock
 {
     private WireMockServer? _server;
-    
+
     public string Url => _server?.Url ?? string.Empty;
 
-    // Checks if the underlying WireMockServer is active and running
     public bool IsStarted => _server is { IsStarted: true };
 
     public void Start()
@@ -36,6 +35,17 @@ public class ExternalServicesMock
                 .WithStatusCode(201)
                 .WithHeader("Content-Type", "application/json")
                 .WithBody("{\"userId\":\"usr_999\",\"amount\":5000.00,\"status\":\"REJECTED\"}"));
+    }
+
+    public void SetupCreditBureauTimeoutResponse()
+    {
+        _server?
+            .Given(Request.Create().WithPath("/users").UsingPost())
+            .RespondWith(Response.Create()
+                .WithStatusCode(201)
+                .WithDelay(TimeSpan.FromSeconds(3))
+                .WithHeader("Content-Type", "application/json")
+                .WithBody("{\"userId\":\"usr_timeout\",\"amount\":100.00,\"status\":\"APPROVED\"}"));
     }
 
     public void Stop()

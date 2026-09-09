@@ -30,8 +30,8 @@ namespace Riverty.RiskWorkflow.Tests.Tests.E2E.Features
         private static string[] featureTags = new string[] {
                 "allure.label.suite:Risk_Decision_E2E_Suite"};
         
-        private static global::Reqnroll.FeatureInfo featureInfo = new global::Reqnroll.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "tests/E2E/Features", "Risk Assessment Workflow", ("As a Risk Decision Engine\nI want to evaluate payment requests\nSo that bad transac" +
-                "tions are blocked"), global::Reqnroll.ProgrammingLanguage.CSharp, featureTags);
+        private static global::Reqnroll.FeatureInfo featureInfo = new global::Reqnroll.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "tests/E2E/Features", "Risk Assessment Workflow", ("As a risk system, I want to evaluate transaction requests \nso that fraudulent or " +
+                "high-risk payments are blocked."), global::Reqnroll.ProgrammingLanguage.CSharp, featureTags);
         
 #line 1 "RiskDecision.feature"
 #line hidden
@@ -86,12 +86,16 @@ namespace Riverty.RiskWorkflow.Tests.Tests.E2E.Features
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Approve low-risk transaction")]
+        [NUnit.Framework.CategoryAttribute("XRAY-1024")]
+        [NUnit.Framework.CategoryAttribute("allure.issue:XRAY-1024")]
         public async System.Threading.Tasks.Task ApproveLow_RiskTransaction()
         {
-            string[] tagsOfScenario = ((string[])(null));
+            string[] tagsOfScenario = new string[] {
+                    "XRAY-1024",
+                    "allure.issue:XRAY-1024"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Approve low-risk transaction", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 7
+#line 8
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -101,13 +105,84 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 await this.ScenarioStartAsync();
-#line 8
+#line 9
     await testRunner.GivenAsync("an external credit bureau returns a low risk score", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
-#line 9
+#line 10
     await testRunner.WhenAsync("a risk evaluation request is sent for amount 50.00 EUR", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-#line 10
+#line 11
+    await testRunner.ThenAsync("the decision status should be \"APPROVED\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+#line hidden
+            }
+            await this.ScenarioCleanupAsync();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Evaluate risk for negative amount transaction")]
+        [NUnit.Framework.CategoryAttribute("XRAY-1026")]
+        [NUnit.Framework.CategoryAttribute("allure.issue:XRAY-1026")]
+        public async System.Threading.Tasks.Task EvaluateRiskForNegativeAmountTransaction()
+        {
+            string[] tagsOfScenario = new string[] {
+                    "XRAY-1026",
+                    "allure.issue:XRAY-1026"};
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Evaluate risk for negative amount transaction", null, tagsOfScenario, argumentsOfScenario, featureTags);
+#line 15
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                await this.ScenarioStartAsync();
+#line 16
+    await testRunner.GivenAsync("an external credit bureau returns a low risk score", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+#line hidden
+#line 17
+    await testRunner.WhenAsync("a risk evaluation request is sent for amount -50.00 EUR", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+#line hidden
+#line 18
+    await testRunner.ThenAsync("the decision status should be \"APPROVED\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+#line hidden
+            }
+            await this.ScenarioCleanupAsync();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Ensure idempotency on repeated request execution")]
+        [NUnit.Framework.CategoryAttribute("XRAY-1027")]
+        [NUnit.Framework.CategoryAttribute("allure.issue:XRAY-1027")]
+        public async System.Threading.Tasks.Task EnsureIdempotencyOnRepeatedRequestExecution()
+        {
+            string[] tagsOfScenario = new string[] {
+                    "XRAY-1027",
+                    "allure.issue:XRAY-1027"};
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Ensure idempotency on repeated request execution", null, tagsOfScenario, argumentsOfScenario, featureTags);
+#line 22
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                await this.ScenarioStartAsync();
+#line 23
+    await testRunner.GivenAsync("an external credit bureau returns a low risk score", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+#line hidden
+#line 24
+    await testRunner.WhenAsync("a risk evaluation request is sent for amount 50.00 EUR", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+#line hidden
+#line 25
+    await testRunner.AndAsync("the same risk evaluation request is sent again", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+#line hidden
+#line 26
     await testRunner.ThenAsync("the decision status should be \"APPROVED\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
             }
