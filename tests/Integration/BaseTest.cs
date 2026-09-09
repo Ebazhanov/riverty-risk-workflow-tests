@@ -1,4 +1,7 @@
+using System.Data;
+using Dapper;
 using NUnit.Framework;
+using Npgsql;
 using Testcontainers.PostgreSql;
 using Riverty.RiskWorkflow.Tests.Common;
 using Riverty.RiskWorkflow.Tests.Integration.Mocks;
@@ -29,9 +32,9 @@ public abstract class BaseTest
                 .Build();
 
             await DbContainer.StartAsync();
+            await InitializeDatabaseSchemaAsync();
         }
 
-        // Start WireMock if missing or stopped
         if (WireMockServer is null || !WireMockServer.IsStarted)
         {
             WireMockServer = new ExternalServicesMock();
@@ -42,6 +45,26 @@ public abstract class BaseTest
         {
             RecreateHttpClient();
         }
+    }
+
+    public static IDbConnection GetDbConnection()
+    {
+        return new NpgsqlConnection(DbContainer!.GetConnectionString());
+    }
+
+    private static async Task InitializeDatabaseSchemaAsync()
+    {
+        using var connection = GetDbConnection();
+        const string createTableSql = """
+            CREATE TABLE IF NOT EXISTS risk_decisions (
+                id SERIAL PRIMARY KEY,
+                user_id VARCHAR(50) NOT NULL,
+                amount NUMERIC(18, 2) NOT NULL,
+                status VARCHAR(20) NOT NULL,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            );
+            """;
+        await connection.ExecuteAsync(createTableSql);
     }
 
     private static void RecreateHttpClient()
@@ -63,7 +86,7 @@ public abstract class BaseTest
     public static async Task OneTimeTearDown()
     {
         WireMockServer?.Stop();
-        WireMockServer = null; // Forces re-creation on subsequent test suite runs
+        WireMockServer = null;
 
         HttpClient?.Dispose();
         HttpClient = null;

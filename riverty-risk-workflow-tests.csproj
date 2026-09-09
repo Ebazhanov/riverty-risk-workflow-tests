@@ -26,6 +26,7 @@
     <PackageReference Include="Allure.NUnit" Version="2.15.0" />
     <PackageReference Include="Allure.Reqnroll" Version="2.12.1" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.11.1" />
+    <PackageReference Include="Npgsql" Version="9.0.2" />
     <PackageReference Include="NUnit" Version="4.2.2" />
     <PackageReference Include="NUnit3TestAdapter" Version="4.6.0" />
     <PackageReference Include="Reqnroll" Version="2.2.1" />
@@ -35,6 +36,7 @@
     <PackageReference Include="FluentAssertions" Version="6.12.1" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="10.0.0-preview.*" />
+    <PackageReference Include="Dapper" Version="2.1.35" />
 
     <None Update="allureConfig.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
