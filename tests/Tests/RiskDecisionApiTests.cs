@@ -32,20 +32,31 @@ public class RiskDecisionApiTests : BaseTest
     public async Task EvaluateRisk_LowRiskUser_ShouldApprove()
     {
         // Arrange
-        WireMockServer.SetupCreditBureauApprovedResponse();
-        var request = new RiskEvaluationRequest("usr_123", 50.00m, "EUR", "BNPL");
+        RiskEvaluationRequest request = null!;
+        AllureApi.Step("Given an external credit bureau returns a low risk score", () =>
+        {
+            WireMockServer.SetupCreditBureauApprovedResponse();
+            request = new RiskEvaluationRequest("usr_123", 50.00m, "EUR", "BNPL");
+        });
 
         // Act
-        var response = await _apiClient.EvaluateRiskAsync(request);
-        var jsonString = await response.Content.ReadAsStringAsync();
-        using var doc = JsonDocument.Parse(jsonString);
+        HttpResponseMessage response = null!;
+        string jsonString = string.Empty;
+        await AllureApi.Step("When a risk evaluation request is sent for amount 50.00 EUR", async () =>
+        {
+            response = await _apiClient.EvaluateRiskAsync(request);
+            jsonString = await response.Content.ReadAsStringAsync();
+        });
 
-        // Assert - HTTP 201 Created from API confirms successful risk transaction recording
-        response.StatusCode.Should().Be(HttpStatusCode.Created);
-        
-        var root = doc.RootElement;
-        root.GetProperty("userId").GetString().Should().Be("usr_123");
-        root.GetProperty("amount").GetDecimal().Should().Be(50.00m);
+        // Assert
+        AllureApi.Step("Then the transaction should be created and validated", () =>
+        {
+            response.StatusCode.Should().Be(HttpStatusCode.Created);
+            using var doc = JsonDocument.Parse(jsonString);
+            var root = doc.RootElement;
+            root.GetProperty("userId").GetString().Should().Be("usr_123");
+            root.GetProperty("amount").GetDecimal().Should().Be(50.00m);
+        });
     }
 
     [Test]
@@ -56,19 +67,30 @@ public class RiskDecisionApiTests : BaseTest
     public async Task EvaluateRisk_HighRiskUser_ShouldReject()
     {
         // Arrange
-        WireMockServer.SetupCreditBureauRejectedResponse();
-        var request = new RiskEvaluationRequest("usr_999", 5000.00m, "EUR", "BNPL");
+        RiskEvaluationRequest request = null!;
+        AllureApi.Step("Given an external credit bureau returns a high risk score", () =>
+        {
+            WireMockServer.SetupCreditBureauRejectedResponse();
+            request = new RiskEvaluationRequest("usr_999", 5000.00m, "EUR", "BNPL");
+        });
 
         // Act
-        var response = await _apiClient.EvaluateRiskAsync(request);
-        var jsonString = await response.Content.ReadAsStringAsync();
-        using var doc = JsonDocument.Parse(jsonString);
+        HttpResponseMessage response = null!;
+        string jsonString = string.Empty;
+        await AllureApi.Step("When a risk evaluation request is sent for amount 5000.00 EUR", async () =>
+        {
+            response = await _apiClient.EvaluateRiskAsync(request);
+            jsonString = await response.Content.ReadAsStringAsync();
+        });
 
-        // Assert - High risk requests over limit are validated by API response status or payload ID
-        response.StatusCode.Should().Be(HttpStatusCode.Created);
-        
-        var root = doc.RootElement;
-        root.GetProperty("userId").GetString().Should().Be("usr_999");
-        root.GetProperty("amount").GetDecimal().Should().Be(5000.00m);
+        // Assert
+        AllureApi.Step("Then high risk requests should be validated with expected payload", () =>
+        {
+            response.StatusCode.Should().Be(HttpStatusCode.Created);
+            using var doc = JsonDocument.Parse(jsonString);
+            var root = doc.RootElement;
+            root.GetProperty("userId").GetString().Should().Be("usr_999");
+            root.GetProperty("amount").GetDecimal().Should().Be(5000.00m);
+        });
     }
 }
