@@ -13,12 +13,12 @@ permissions:
 
 jobs:
   test-and-report:
-    name: Run Integration Tests & Build Allure
+    name: Tests & Allure
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v4.2.2
 
       - name: Setup .NET 8 SDK
         uses: actions/setup-dotnet@v4
@@ -38,7 +38,7 @@ jobs:
         continue-on-error: true
 
       - name: Fetch Allure History
-        uses: actions/checkout@v4
+        uses: actions/checkout@v4.2.2
         if: always()
         continue-on-error: true
         with:
@@ -61,6 +61,7 @@ jobs:
             cp -r gh-pages-dir/history bin/Release/net10.0/allure-results/history || true
           fi
           allure generate bin/Release/net10.0/allure-results --clean -o allure-history
+          echo "### 📊 [View Allure Report](https://ebazhanov.github.io/riverty-risk-workflow-tests/)" >> $GITHUB_STEP_SUMMARY
 
       - name: Upload Allure Report Artifact
         uses: actions/upload-artifact@v4
