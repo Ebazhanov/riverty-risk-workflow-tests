@@ -64,6 +64,9 @@ jobs:
     name: Deploy to GitHub Pages
     needs: test-and-report
     if: always() && (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
+    permissions:
+      pages: write
+      id-token: write
     runs-on: ubuntu-latest
     environment:
       name: github-pages
