@@ -1,0 +1,71 @@
+name: Risk Decision Quality Gate
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  checks: write
+
+jobs:
+  test-and-report:
+    name: Run Integration Tests & Build Allure
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup .NET 8 SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+          cache: true
+          cache-dependency-path: '**/*.csproj'
+
+      - name: Restore Dependencies
+        run: dotnet restore
+
+      - name: Build Solution
+        run: dotnet build --configuration Release --no-restore
+
+      - name: Execute Test Suite
+        run: dotnet test --configuration Release --no-build --logger "console;verbosity=detailed"
+        continue-on-error: true
+
+      - name: Fetch Allure History
+        uses: actions/checkout@v4
+        if: always()
+        continue-on-error: true
+        with:
+          ref: gh-pages
+          path: gh-pages-dir
+
+      - name: Generate Allure Report
+        uses: simple-elf/allure-report-action@v1.7
+        if: always()
+        with:
+          allure_results: **/allure-results
+          allure_history: allure-history
+          gh_pages: gh-pages-dir
+          keep_reports: 20
+
+      - name: Upload Allure Report Artifact
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: allure-report
+          path: allure-history
+          retention-days: 14
+
+      - name: Publish Allure Report to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        if: always()
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: gh-pages
+          publish_dir: allure-history

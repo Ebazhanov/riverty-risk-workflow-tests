@@ -84,14 +84,12 @@ namespace Riverty.RiskWorkflow.Tests.Tests.Features
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Approve low-risk transaction")]
-        [NUnit.Framework.CategoryAttribute("XRAY-101")]
         public async System.Threading.Tasks.Task ApproveLow_RiskTransaction()
         {
-            string[] tagsOfScenario = new string[] {
-                    "XRAY-101"};
+            string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Approve low-risk transaction", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 7
+#line 6
   this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -101,13 +99,13 @@ namespace Riverty.RiskWorkflow.Tests.Tests.Features
             else
             {
                 await this.ScenarioStartAsync();
-#line 8
+#line 7
     await testRunner.GivenAsync("an external credit bureau returns a low risk score", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
-#line 9
+#line 8
     await testRunner.WhenAsync("a risk evaluation request is sent for amount 50.00 EUR", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-#line 10
+#line 9
     await testRunner.ThenAsync("the decision status should be \"APPROVED\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
             }
