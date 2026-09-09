@@ -1,6 +1,7 @@
 ## Risk Decision Workflow — SDET Test Automation Suite
 
-[![CI Pipeline](https://github.com/Ebazhanov/riverty-risk-workflow-tests/actions/workflows/ci.yml/badge.svg)](https://github.com/Ebazhanov/riverty-risk-workflow-tests/actions/workflows/ci.yml)
+[![CI Pipeline](https://github.com/Ebazhanov/riverty-risk-workflow-tests/actions/workflows/api-integration-tests.yml/badge.svg)](https://github.com/Ebazhanov/riverty-risk-workflow-tests/actions/workflows/api-integration-tests.yml)
+[![Allure Report](https://img.shields.io/badge/Allure%20Report-GitHub%20Pages-1262B5?style=flat&logo=qameta&logoColor=white)](https://ebazhanov.github.io/riverty-risk-workflow-tests/)
 
 ### 🧪 Risk Decision Workflow — Test Execution Matrix
 ##### TC-RISK-001: Low Risk Score Approval
