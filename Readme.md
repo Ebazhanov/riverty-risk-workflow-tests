@@ -3,6 +3,21 @@
 [![CI Pipeline](https://github.com/Ebazhanov/riverty-risk-workflow-tests/actions/workflows/api-integration-tests.yml/badge.svg)](https://github.com/Ebazhanov/riverty-risk-workflow-tests/actions/workflows/api-integration-tests.yml)
 [![Allure Report](https://img.shields.io/badge/Allure%20Report-GitHub%20Pages-1262B5?style=flat&logo=qameta&logoColor=white)](https://ebazhanov.github.io/riverty-risk-workflow-tests/)
 
+
+### Prerequisites & Local Environment
+
+Ensure Docker Daemon is running locally before executing integration tests:
+
+```fish
+# Check Docker status
+docker ps
+
+# Run full integration test suite
+dotnet test --configuration Release
+```
+
+----
+
 ### 🧪 Risk Decision Workflow — Test Execution Matrix
 ##### TC-RISK-001: Low Risk Score Approval
 - [x] **Passed** — Integration API & WireMock validation (`EvaluateRisk_LowRiskUser_ShouldApprove`)
