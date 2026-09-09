@@ -31,13 +31,30 @@ public class RiskDecisionApiTests : BaseTest
     [AllureIssue("XRAY-1024")]
     public async Task EvaluateRisk_LowRiskUser_ShouldApprove()
     {
-        SetupApprovedMock();
-        var request = new RiskEvaluationRequest("usr_123", 50.00m, "EUR", "BNPL");
+        RiskEvaluationRequest request = null!;
+        HttpResponseMessage response = null!;
+        string jsonString = string.Empty;
 
-        var response = await ExecuteRiskEvaluationStep(request);
-        var jsonString = await response.Content.ReadAsStringAsync();
+        AllureApi.Step("Given an external credit bureau returns a low risk score", () =>
+        {
+            WireMockServer.SetupCreditBureauApprovedResponse();
+            request = new RiskEvaluationRequest("usr_123", 50.00m, "EUR", "BNPL");
+        });
 
-        ValidateCreatedResponseStep(response, jsonString, "usr_123", 50.00m);
+        await AllureApi.Step("When a risk evaluation request is sent to the API", async () =>
+        {
+            response = await _apiClient.EvaluateRiskAsync(request);
+            jsonString = await response.Content.ReadAsStringAsync();
+        });
+
+        AllureApi.Step("Then the API creates transaction with status HTTP 201 Created", () =>
+        {
+            response.StatusCode.Should().Be(HttpStatusCode.Created);
+            using var doc = JsonDocument.Parse(jsonString);
+            var root = doc.RootElement;
+            root.GetProperty("userId").GetString().Should().Be("usr_123");
+            root.GetProperty("amount").GetDecimal().Should().Be(50.00m);
+        });
     }
 
     [Test]
@@ -47,40 +64,29 @@ public class RiskDecisionApiTests : BaseTest
     [AllureIssue("XRAY-1025")]
     public async Task EvaluateRisk_HighRiskUser_ShouldReject()
     {
-        SetupRejectedMock();
-        var request = new RiskEvaluationRequest("usr_999", 5000.00m, "EUR", "BNPL");
+        RiskEvaluationRequest request = null!;
+        HttpResponseMessage response = null!;
+        string jsonString = string.Empty;
 
-        var response = await ExecuteRiskEvaluationStep(request);
-        var jsonString = await response.Content.ReadAsStringAsync();
+        AllureApi.Step("Given an external credit bureau returns a high risk score", () =>
+        {
+            WireMockServer.SetupCreditBureauRejectedResponse();
+            request = new RiskEvaluationRequest("usr_999", 5000.00m, "EUR", "BNPL");
+        });
 
-        ValidateCreatedResponseStep(response, jsonString, "usr_999", 5000.00m);
-    }
+        await AllureApi.Step("When a risk evaluation request is sent to the API", async () =>
+        {
+            response = await _apiClient.EvaluateRiskAsync(request);
+            jsonString = await response.Content.ReadAsStringAsync();
+        });
 
-    [AllureStep("Given an external credit bureau returns a low risk score")]
-    private void SetupApprovedMock()
-    {
-        WireMockServer.SetupCreditBureauApprovedResponse();
-    }
-
-    [AllureStep("Given an external credit bureau returns a high risk score")]
-    private void SetupRejectedMock()
-    {
-        WireMockServer.SetupCreditBureauRejectedResponse();
-    }
-
-    [AllureStep("When a risk evaluation request is sent to the API")]
-    private async Task<HttpResponseMessage> ExecuteRiskEvaluationStep(RiskEvaluationRequest request)
-    {
-        return await _apiClient.EvaluateRiskAsync(request);
-    }
-
-    [AllureStep("Then the API records the transaction with status HTTP 201 Created")]
-    private void ValidateCreatedResponseStep(HttpResponseMessage response, string jsonString, string expectedUserId, decimal expectedAmount)
-    {
-        response.StatusCode.Should().Be(HttpStatusCode.Created);
-        using var doc = JsonDocument.Parse(jsonString);
-        var root = doc.RootElement;
-        root.GetProperty("userId").GetString().Should().Be(expectedUserId);
-        root.GetProperty("amount").GetDecimal().Should().Be(expectedAmount);
+        AllureApi.Step("Then the API validates high risk payload with status HTTP 201 Created", () =>
+        {
+            response.StatusCode.Should().Be(HttpStatusCode.Created);
+            using var doc = JsonDocument.Parse(jsonString);
+            var root = doc.RootElement;
+            root.GetProperty("userId").GetString().Should().Be("usr_999");
+            root.GetProperty("amount").GetDecimal().Should().Be(5000.00m);
+        });
     }
 }
