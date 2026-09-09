@@ -1,3 +1,3 @@
 "Status","Start Time","Stop Time","Duration in ms","Parent Suite","Suite","Sub Suite","Test Class","Test Method","Name","Description"
-"passed","Wed Sep 09 10:43:24 UTC 2026","Wed Sep 09 10:43:24 UTC 2026","88","","Risk Decision API Suite","","RiskDecisionApiTests","EvaluateRisk_LowRiskUser_ShouldApprove","EvaluateRisk_LowRiskUser_ShouldApprove",""
-"passed","Wed Sep 09 10:43:24 UTC 2026","Wed Sep 09 10:43:24 UTC 2026","96","","Risk Decision API Suite","","RiskDecisionApiTests","EvaluateRisk_HighRiskUser_ShouldReject","EvaluateRisk_HighRiskUser_ShouldReject",""
+"passed","Wed Sep 09 10:49:25 UTC 2026","Wed Sep 09 10:49:25 UTC 2026","91","","Risk Decision API Suite","","RiskDecisionApiTests","EvaluateRisk_LowRiskUser_ShouldApprove","EvaluateRisk_LowRiskUser_ShouldApprove",""
+"passed","Wed Sep 09 10:49:25 UTC 2026","Wed Sep 09 10:49:25 UTC 2026","101","","Risk Decision API Suite","","RiskDecisionApiTests","EvaluateRisk_HighRiskUser_ShouldReject","EvaluateRisk_HighRiskUser_ShouldReject",""
