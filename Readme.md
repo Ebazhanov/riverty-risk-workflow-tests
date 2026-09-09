@@ -3,6 +3,11 @@
 [![CI Pipeline](https://github.com/Ebazhanov/riverty-risk-workflow-tests/actions/workflows/api-integration-tests.yml/badge.svg)](https://github.com/Ebazhanov/riverty-risk-workflow-tests/actions/workflows/api-integration-tests.yml)
 [![Allure Report](https://img.shields.io/badge/Allure%20Report-GitHub%20Pages-1262B5?style=flat&logo=qameta&logoColor=white)](https://ebazhanov.github.io/riverty-risk-workflow-tests/)
 
+### Key Technical Highlights
+* **Code Quality & Roslyn Rules:** Strict namespace alignment across project folders; clean build zero-warnings (`CA1050`, `CA1716` resolved).
+* **Test Resilience & Lifecycle:** Robust lifecycle management for `WireMockServer` and `HttpClient` preventing `ObjectDisposedException` and port conflicts across runner boundaries.
+* **Negative & Boundary Coverage:** Automated tests for network latency/delays, negative payloads, and request idempotency.
+* **Reporting & Traceability:** Integrated `Allure` reporting with HTTP payload attachments and bidirectional Jira/Xray scenario tagging (`@XRAY-*`).
 
 ### Prerequisites & Local Environment
 
@@ -26,6 +31,10 @@ dotnet test --configuration Release
   /          \ Component (In-Memory / TestServer)
   
 ````
+### Test Pyramid
+* **Component Layer (`tests/Component/`):** Fast in-memory endpoint testing via `CustomWebApplicationFactory` and `Microsoft.AspNetCore.TestHost`.
+* **Integration Layer (`tests/Integration/`):** Ephemeral PostgreSQL database validation via `Testcontainers`, downstream API mocking with `WireMock.Net`, and direct database assertions using `Dapper` & `Npgsql`.
+* **E2E Layer (`tests/E2E/`):** Business acceptance scenarios in Gherkin (`.feature`) orchestrated by `Reqnroll` (SpecFlow).
 
 
 #### Level 1: Component Tests (`tests/Component/`)
