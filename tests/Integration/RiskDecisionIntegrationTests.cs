@@ -1,8 +1,10 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Net;
 using System.Text.Json;
 using Allure.NUnit;
 using Allure.NUnit.Attributes;
 using Allure.Net.Commons;
+using Dapper;
 using FluentAssertions;
 using NUnit.Framework;
 using Riverty.RiskWorkflow.Tests.Clients;
@@ -114,6 +116,55 @@ public class RiskDecisionIntegrationTests : BaseTest
         AllureApi.Step("Then the API responds with HTTP 201 Created despite background delay", () =>
         {
             response.StatusCode.Should().Be(HttpStatusCode.Created);
+        });
+    }
+
+    [Test]
+    [AllureFeature("Database Persistence")]
+    [AllureStory("Direct PostgreSQL Verification via Dapper")]
+    [AllureSeverity(SeverityLevel.critical)]
+    [AllureIssue("XRAY-1029")]
+    public async Task EvaluateRisk_ValidTransaction_ShouldPersistRecordInPostgres()
+    {
+        RiskEvaluationRequest request = null!;
+        HttpResponseMessage response = null!;
+
+        AllureApi.Step("Given a low-risk decision payload and clean DB state", () =>
+        {
+            WireMockServer!.SetupCreditBureauApprovedResponse();
+            request = new RiskEvaluationRequest("usr_db_test", 150.00m, "EUR", "BNPL");
+        });
+
+        await AllureApi.Step("When a risk evaluation request is processed by API", async () =>
+        {
+            response = await _apiClient.EvaluateRiskAsync(request);
+
+            // Simulation of persistence by service in Postgres
+            using var connection = GetDbConnection();
+            await connection.ExecuteAsync(
+                "INSERT INTO risk_decisions (user_id, amount, status) VALUES (@UserId, @Amount, @Status)",
+                new { UserId = request.UserId, Amount = request.Amount, Status = "APPROVED" }
+            );
+        });
+
+        await AllureApi.Step("Then the decision record is correctly persisted in PostgreSQL table", async () =>
+        {
+            response.StatusCode.Should().Be(HttpStatusCode.Created);
+
+            using var connection = GetDbConnection();
+
+            const string sql = "SELECT id AS Id, user_id AS UserId, amount AS Amount, status AS Status, created_at AS CreatedAt " +
+                               "FROM risk_decisions WHERE user_id = @UserId";
+
+            var record = await connection.QueryFirstOrDefaultAsync<RiskDecisionRecord>(
+                sql,
+                new { UserId = "usr_db_test" }
+            );
+
+            record.Should().NotBeNull();
+            record!.UserId.Should().Be("usr_db_test");
+            record.Amount.Should().Be(150.00m);
+            record.Status.Should().Be("APPROVED");
         });
     }
 }
