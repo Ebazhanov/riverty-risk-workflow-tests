@@ -3,7 +3,6 @@ Feature: Risk Assessment Workflow
   I want to evaluate payment requests
   So that bad transactions are blocked
 
-  @XRAY-101
   Scenario: Approve low-risk transaction
     Given an external credit bureau returns a low risk score
     When a risk evaluation request is sent for amount 50.00 EUR

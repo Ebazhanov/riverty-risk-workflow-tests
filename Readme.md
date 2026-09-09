@@ -1,25 +1,24 @@
-## Riverty Risk Decision Workflow — SDET Test Automation Suite
+## Risk Decision Workflow — SDET Test Automation Suite
 
 [![CI Pipeline](https://github.com/Ebazhanov/riverty-risk-workflow-tests/actions/workflows/ci.yml/badge.svg)](https://github.com/Ebazhanov/riverty-risk-workflow-tests/actions/workflows/ci.yml)
 
 ### 🧪 Risk Decision Workflow — Test Execution Matrix
-##### [TC-RISK-001: Low Risk Score Approval](https://docs.riverty.com/bnpl/api_reference/#tag/Authorize)
+##### TC-RISK-001: Low Risk Score Approval
 - [x] **Passed** — Integration API & WireMock validation (`EvaluateRisk_LowRiskUser_ShouldApprove`)
-- [x] **Passed** — Reqnroll BDD Gherkin scenario validation (`@XRAY-101`)
 
-##### [TC-RISK-002: Hard Decline for Low Credit Score](https://docs.riverty.com/bnpl/api_reference/#tag/Authorize)
-- [x] **Passed** — Automatic rejection for high-risk profiles (`EvaluateRisk_HighRiskUser_ShouldReject`)
+##### TC-RISK-002: Hard Decline for Low Credit Score
+- [ ] **Passed** — Automatic rejection for high-risk profiles (`EvaluateRisk_HighRiskUser_ShouldReject`)
 
-##### [TC-RISK-003: Boundary Score Evaluation](https://docs.riverty.com/bnpl/api_reference/)
+##### TC-RISK-003: Boundary Score Evaluation
 - [ ] Approval Test at Exact Score Boundary (Score: 700 / Amount Threshold)
 
-##### [TC-RISK-004: Credit Limit Exceeded](https://docs.riverty.com/bnpl/api_reference/)
+##### TC-RISK-004: Credit Limit Exceeded
 - [ ] Transaction Decline Due to Insufficient Credit Limit
 
-##### [TC-RISK-005: Downstream API Timeout & Resilience](https://docs.riverty.com/bnpl/api_reference/#section/Errors)
+##### TC-RISK-005: Downstream API Timeout & Resilience
 - [ ] Graceful Fallback to Manual Review on External Service Latency (WireMock 504 Delay Simulation)
 
-##### [TC-RISK-006: Invalid Bank Details & IBAN Validation](https://docs.riverty.com/bnpl/api_reference/#section/Errors)
+##### TC-RISK-006: Invalid Bank Details & IBAN Validation
 - [ ] Input Rejection on Malformed Account Parameters (400 Bad Request)
 
 ---
