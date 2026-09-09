@@ -2,25 +2,30 @@ name: Risk Decision Quality Gate
 
 on:
   push:
-    branches: [ main ]
+    branches: [ 'main' ]
   pull_request:
-    branches: [ main ]
+    branches: [ 'main' ]
   workflow_dispatch:
 
 permissions:
-  contents: write
-  checks: write
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   test-and-report:
-    name: Tests & Allure
+    name: Tests & Allure Report
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Repository
+      - name: Checkout repository
         uses: actions/checkout@v4.2.2
 
-      - name: Setup .NET 8 SDK
+      - name: Setup .NET SDK
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '8.0.x'
@@ -37,14 +42,6 @@ jobs:
         run: dotnet test --configuration Release --no-build --logger "console;verbosity=detailed"
         continue-on-error: true
 
-      - name: Fetch Allure History
-        uses: actions/checkout@v4.2.2
-        if: always()
-        continue-on-error: true
-        with:
-          ref: gh-pages
-          path: gh-pages-dir
-
       - name: Install Allure CLI
         if: always()
         run: |
@@ -55,26 +52,24 @@ jobs:
 
       - name: Generate Allure Report
         if: always()
-        run: |
-          mkdir -p allure-history
-          if [ -d "gh-pages-dir/history" ]; then
-            cp -r gh-pages-dir/history bin/Release/net10.0/allure-results/history || true
-          fi
-          allure generate bin/Release/net10.0/allure-results --clean -o allure-history
-          echo "### 📊 [View Allure Report](https://ebazhanov.github.io/riverty-risk-workflow-tests/)" >> $GITHUB_STEP_SUMMARY
+        run: allure generate bin/Release/net10.0/allure-results -o allure-report --clean
 
-      - name: Upload Allure Report Artifact
-        uses: actions/upload-artifact@v4
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
         if: always()
         with:
-          name: allure-report
-          path: allure-history
-          retention-days: 14
+          path: ./allure-report
 
-      - name: Publish Allure Report to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
-        if: always()
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_branch: gh-pages
-          publish_dir: allure-history
+  deploy:
+    name: Deploy to GitHub Pages
+    needs: test-and-report
+    if: always() && (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
