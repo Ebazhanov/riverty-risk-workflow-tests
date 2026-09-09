@@ -8,7 +8,7 @@ using NUnit.Framework;
 using Riverty.RiskWorkflow.Tests.Factories;
 using Riverty.RiskWorkflow.Tests.Models;
 
-namespace Riverty.RiskWorkflow.Tests.Tests;
+namespace Riverty.RiskWorkflow.Tests.Tests.Component;
 
 [TestFixture]
 [AllureNUnit]

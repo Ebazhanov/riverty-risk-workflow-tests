@@ -10,7 +10,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace Riverty.RiskWorkflow.Tests.Tests.Features
+namespace Riverty.RiskWorkflow.Tests.Tests.E2E.Features
 {
     using Reqnroll;
     using System;
@@ -21,17 +21,19 @@ namespace Riverty.RiskWorkflow.Tests.Tests.Features
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [NUnit.Framework.TestFixtureAttribute()]
     [NUnit.Framework.DescriptionAttribute("Risk Assessment Workflow")]
+    [NUnit.Framework.CategoryAttribute("allure.label.suite:Risk_Decision_E2E_Suite")]
     public partial class RiskAssessmentWorkflowFeature
     {
         
         private global::Reqnroll.ITestRunner testRunner;
         
-        private static string[] featureTags = ((string[])(null));
+        private static string[] featureTags = new string[] {
+                "allure.label.suite:Risk_Decision_E2E_Suite"};
         
-        private static global::Reqnroll.FeatureInfo featureInfo = new global::Reqnroll.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "tests/Features", "Risk Assessment Workflow", ("  As a Risk Decision Engine\n  I want to evaluate payment requests\n  So that bad t" +
-                "ransactions are blocked"), global::Reqnroll.ProgrammingLanguage.CSharp, featureTags);
+        private static global::Reqnroll.FeatureInfo featureInfo = new global::Reqnroll.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "tests/E2E/Features", "Risk Assessment Workflow", ("As a Risk Decision Engine\nI want to evaluate payment requests\nSo that bad transac" +
+                "tions are blocked"), global::Reqnroll.ProgrammingLanguage.CSharp, featureTags);
         
-#line 1 "RiskAssessment.feature"
+#line 1 "RiskDecision.feature"
 #line hidden
         
         [NUnit.Framework.OneTimeSetUpAttribute()]
@@ -89,8 +91,8 @@ namespace Riverty.RiskWorkflow.Tests.Tests.Features
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Approve low-risk transaction", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 6
-  this.ScenarioInitialize(scenarioInfo);
+#line 7
+this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
             {
@@ -99,13 +101,13 @@ namespace Riverty.RiskWorkflow.Tests.Tests.Features
             else
             {
                 await this.ScenarioStartAsync();
-#line 7
+#line 8
     await testRunner.GivenAsync("an external credit bureau returns a low risk score", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
-#line 8
+#line 9
     await testRunner.WhenAsync("a risk evaluation request is sent for amount 50.00 EUR", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-#line 9
+#line 10
     await testRunner.ThenAsync("the decision status should be \"APPROVED\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
             }

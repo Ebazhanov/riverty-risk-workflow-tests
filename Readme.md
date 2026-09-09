@@ -17,26 +17,30 @@ dotnet test --configuration Release
 ```
 
 ----
+```text
+       /\
+      /  \     End-to-End (BDD / Reqnroll)
+     /----\    --------------------------------
+    /      \   Integration (WireMock + Testcontainers)
+   /--------\  ----------------------------------------
+  /          \ Component (In-Memory / TestServer)
+  
+````
 
-### 🧪 Risk Decision Workflow — Test Execution Matrix
-##### TC-RISK-001: Low Risk Score Approval
-- [x] **Passed** — Integration API & WireMock validation (`EvaluateRisk_LowRiskUser_ShouldApprove`)
 
-##### TC-RISK-002: Hard Decline for Low Credit Score
-- [ ] **Passed** — Automatic rejection for high-risk profiles (`EvaluateRisk_HighRiskUser_ShouldReject`)
+#### Level 1: Component Tests (`tests/Component/`)
+- [x] `PostEvaluateRisk_InMemoryCall_ReturnsCreatedStatus` — Fast in-memory endpoint validation via `TestServer`
 
-##### TC-RISK-003: Boundary Score Evaluation
-- [ ] Approval Test at Exact Score Boundary (Score: 700 / Amount Threshold)
+#### Level 2: Integration Tests (`tests/Integration/`)
+- [x] `TC-RISK-001` — Low risk score approval (`EvaluateRisk_LowRiskUser_ShouldApprove`)
+- [x] `TC-RISK-002` — Hard decline for low credit score (`EvaluateRisk_HighRiskUser_ShouldReject`)
+- [ ] `TC-RISK-003` — Boundary score evaluation at exact score limit (700)
+- [ ] `TC-RISK-004` — Transaction decline due to exceeded credit limit
+- [ ] `TC-RISK-005` — Downstream API timeout & resilience (WireMock 504 delay simulation)
+- [ ] `TC-RISK-006` — Invalid bank details & IBAN input rejection (400 Bad Request)
 
-##### TC-RISK-004: Credit Limit Exceeded
-- [ ] Transaction Decline Due to Insufficient Credit Limit
-
-##### TC-RISK-005: Downstream API Timeout & Resilience
-- [ ] Graceful Fallback to Manual Review on External Service Latency (WireMock 504 Delay Simulation)
-
-##### TC-RISK-006: Invalid Bank Details & IBAN Validation
-- [ ] Input Rejection on Malformed Account Parameters (400 Bad Request)
-
+#### Level 3: End-to-End Acceptance (`tests/E2E/`)
+- [x] `ApproveLow_RiskTransaction` — Gherkin BDD scenario for approved transaction flow (`RiskDecision.feature`)
 ---
 
 ## ⚡ Performance & SLA Validation (k6)
@@ -52,3 +56,16 @@ Run the performance test script using [k6](https://k6.io/):
 
 ```fish
 k6 run performance/risk-load-test.js
+```
+
+-----
+### 📂 Directory Structure
+
+```text
+    tests/
+    ├── Clients/        # HTTP API clients (RiskDecisionApiClient)
+    ├── Component/      # Level 1: In-memory tests & WebApplicationFactory
+    ├── E2E/            # Level 3: Gherkin feature specs & step bindings
+    ├── Integration/    # Level 2: WireMock, Testcontainers & base setup
+    └── Shared/         # DTO models & cross-cutting logging handlers
+```

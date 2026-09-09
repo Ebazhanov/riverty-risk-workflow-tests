@@ -3,7 +3,7 @@ using Testcontainers.PostgreSql;
 using Riverty.RiskWorkflow.Tests.Clients;
 using Riverty.RiskWorkflow.Tests.Mocks;
 
-namespace Riverty.RiskWorkflow.Tests.Tests;
+namespace Riverty.RiskWorkflow.Tests.Integration;
 
 [TestFixture]
 public abstract class BaseTest

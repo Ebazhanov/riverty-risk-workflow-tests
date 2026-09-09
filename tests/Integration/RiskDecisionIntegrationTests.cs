@@ -8,13 +8,13 @@ using NUnit.Framework;
 using Riverty.RiskWorkflow.Tests.Clients;
 using Riverty.RiskWorkflow.Tests.Models;
 
-namespace Riverty.RiskWorkflow.Tests.Tests;
+namespace Riverty.RiskWorkflow.Tests.Tests.Integration;
 
 [TestFixture]
 [AllureNUnit]
 [AllureSuite("Risk Decision API Suite")]
 [AllureOwner("Evgenii Bazhanov")]
-public class RiskDecisionApiTests : BaseTest
+public class RiskDecisionIntegrationTests : BaseTest
 {
     private RiskDecisionApiClient _apiClient = null!;
 

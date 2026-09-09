@@ -1,14 +1,18 @@
 using System.Net;
+using Allure.Net.Commons;
+using Allure.NUnit.Attributes;
 using FluentAssertions;
 using Reqnroll;
 using Riverty.RiskWorkflow.Tests.Clients;
-using Riverty.RiskWorkflow.Tests.Models;
-using Riverty.RiskWorkflow.Tests.Tests;
+using Riverty.RiskWorkflow.Tests.Integration;
+using Riverty.RiskWorkflow.Tests.Shared.Models;
 
-namespace Riverty.RiskWorkflow.Tests.Steps;
+namespace Riverty.RiskWorkflow.Tests.E2E.Steps;
 
 [Binding]
-public sealed class RiskAssessmentSteps
+[AllureSuite("Risk Decision E2E Suite")]
+[AllureFeature("Risk Decisioning Workflow")]
+public sealed class RiskDecisionSteps
 {
     private RiskDecisionApiClient _apiClient = null!;
     private HttpResponseMessage _response = null!;
