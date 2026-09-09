@@ -1,11 +1,10 @@
 using System.Net;
-using Allure.Net.Commons;
 using Allure.NUnit.Attributes;
 using FluentAssertions;
 using Reqnroll;
 using Riverty.RiskWorkflow.Tests.Clients;
 using Riverty.RiskWorkflow.Tests.Integration;
-using Riverty.RiskWorkflow.Tests.Shared.Models;
+using Riverty.RiskWorkflow.Tests.Common.Models;
 
 namespace Riverty.RiskWorkflow.Tests.E2E.Steps;
 
@@ -24,8 +23,9 @@ public sealed class RiskDecisionSteps
     }
 
     [BeforeScenario]
-    public void Setup()
+    public async Task Setup()
     {
+        await BaseTest.InitializeGlobalStateAsync();
         _apiClient = new RiskDecisionApiClient(BaseTest.HttpClient!);
     }
 

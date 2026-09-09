@@ -5,10 +5,10 @@ using Allure.NUnit.Attributes;
 using Allure.Net.Commons;
 using FluentAssertions;
 using NUnit.Framework;
-using Riverty.RiskWorkflow.Tests.Factories;
-using Riverty.RiskWorkflow.Tests.Models;
+using Riverty.RiskWorkflow.Tests.Component.Factories;
+using Riverty.RiskWorkflow.Tests.Common.Models;
 
-namespace Riverty.RiskWorkflow.Tests.Tests.Component;
+namespace Riverty.RiskWorkflow.Tests.Component;
 
 [TestFixture]
 [AllureNUnit]

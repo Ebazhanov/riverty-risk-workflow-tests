@@ -6,9 +6,9 @@ using Allure.Net.Commons;
 using FluentAssertions;
 using NUnit.Framework;
 using Riverty.RiskWorkflow.Tests.Clients;
-using Riverty.RiskWorkflow.Tests.Models;
+using Riverty.RiskWorkflow.Tests.Common.Models;
 
-namespace Riverty.RiskWorkflow.Tests.Tests.Integration;
+namespace Riverty.RiskWorkflow.Tests.Integration;
 
 [TestFixture]
 [AllureNUnit]

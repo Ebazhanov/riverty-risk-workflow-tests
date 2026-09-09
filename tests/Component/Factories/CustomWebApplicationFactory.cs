@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-namespace Riverty.RiskWorkflow.Tests.Factories;
+namespace Riverty.RiskWorkflow.Tests.Component.Factories;
 
 public sealed class CustomWebApplicationFactory : IDisposable
 {

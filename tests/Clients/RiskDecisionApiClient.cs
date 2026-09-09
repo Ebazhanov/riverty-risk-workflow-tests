@@ -1,7 +1,7 @@
 using System.Net.Http.Json;
-using Riverty.RiskWorkflow.Tests.Models;
+using Riverty.RiskWorkflow.Tests.Common.Models;
 
-using Riverty.RiskWorkflow.Tests.Shared.Models;
+namespace Riverty.RiskWorkflow.Tests.Clients;
 
 public class RiskDecisionApiClient(HttpClient client)
 {
