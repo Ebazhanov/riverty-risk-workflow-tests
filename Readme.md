@@ -45,9 +45,8 @@ dotnet test --configuration Release
 - [x] `Ensure idempotency on repeated request execution` — Idempotency check scenario (`RiskDecision.feature`)
 ---
 
-## ⚡ Performance & SLA Validation (k6)
-
-The suite includes load testing for the Risk Decision Workflow to ensure sub-second response times under concurrent load.
+## Performance & SLA Validation (k6)
+> The suite includes load testing for the Risk Decision Workflow to ensure sub-second response times under concurrent load.
 
 * **SLA Threshold:** 95% of API requests must complete in **< 500ms** (`p(95) < 500`).
 * **Error Rate Target:** Less than **1%** failure rate under peak traffic.
@@ -61,7 +60,7 @@ k6 run performance/risk-load-test.js
 ```
 
 -----
-### 📂 Directory Structure
+### Directory Structure
 
 ```text
     tests/
