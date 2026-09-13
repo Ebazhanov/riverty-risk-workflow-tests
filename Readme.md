@@ -4,10 +4,10 @@
 [![Allure Report](https://img.shields.io/badge/Allure%20Report-GitHub%20Pages-1262B5?style=flat&logo=qameta&logoColor=white)](https://ebazhanov.github.io/riverty-risk-workflow-tests/)
 
 ### Key Technical Highlights
-* **Code Quality & Roslyn Rules:** Strict namespace alignment across project folders; clean build zero-warnings (`CA1050`, `CA1716` resolved).
-* **Test Resilience & Lifecycle:** Robust lifecycle management for `WireMockServer` and `HttpClient` preventing `ObjectDisposedException` and port conflicts across runner boundaries.
-* **Negative & Boundary Coverage:** Automated tests for network latency/delays, negative payloads, and request idempotency.
-* **Reporting & Traceability:** Integrated `Allure` reporting with HTTP payload attachments and bidirectional Jira/Xray scenario tagging (`@XRAY-*`).
+* **Code Quality & Roslyn Rules:** Maintained high code quality via zero-warning builds and Roslyn rules.
+* **Test Resilience & Lifecycle:** Reliable WireMock & HttpClient lifecycle management.
+* **Negative & Boundary Coverage:** Latency, negative scenario, and idempotency coverage.
+* **Reporting & Traceability:** Allure reporting with full payload logs + Jira/Xray linking.
 
 ### Prerequisites & Local Environment
 
@@ -77,5 +77,5 @@ k6 run performance/risk-load-test.js
     ├── Component/      # Level 1: In-memory tests & WebApplicationFactory
     ├── E2E/            # Level 3: Gherkin feature specs & step bindings
     ├── Integration/    # Level 2: WireMock, Testcontainers & base setup
-    └── Shared/         # DTO models & cross-cutting logging handlers
+    └── Common/         # DTO models & cross-cutting logging handlers
 ```
