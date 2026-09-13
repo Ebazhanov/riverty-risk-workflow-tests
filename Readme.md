@@ -2,6 +2,7 @@
 
 [![CI Pipeline](https://github.com/Ebazhanov/riverty-risk-workflow-tests/actions/workflows/api-integration-tests.yml/badge.svg)](https://github.com/Ebazhanov/riverty-risk-workflow-tests/actions/workflows/api-integration-tests.yml)
 [![Allure Report](https://img.shields.io/badge/Allure%20Report-GitHub%20Pages-1262B5?style=flat&logo=qameta&logoColor=white)](https://ebazhanov.github.io/riverty-risk-workflow-tests/)
+[![YouTube Demo](https://img.shields.io/badge/YouTube-Video%20Walkthrough-FF0000?style=flat&logo=youtube&logoColor=white)](https://youtu.be/Nc3x9nabiqM)
 
 ### Key Technical Highlights
 * **Code Quality & Roslyn Rules:** Maintained high code quality via zero-warning builds and Roslyn rules.
