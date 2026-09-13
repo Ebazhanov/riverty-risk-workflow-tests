@@ -43,13 +43,13 @@ jobs:
         continue-on-error: true
 
       - name: Install Allure CLI
-          if: always()
-          run: |
-            wget -q https://github.com/allure-framework/allure2/releases/download/2.29.0/allure-2.29.0.tgz
-            tar -zxf allure-2.29.0.tgz
-            sudo mv allure-2.29.0 /opt/allure
-            sudo ln -s /opt/allure/bin/allure /usr/bin/allure
-            rm allure-2.29.0.tgz
+        if: always()
+        run: |
+          wget -q https://github.com/allure-framework/allure2/releases/download/2.29.0/allure-2.29.0.tgz
+          tar -zxf allure-2.29.0.tgz
+          sudo mv allure-2.29.0 /opt/allure
+          sudo ln -s /opt/allure/bin/allure /usr/bin/allure
+          rm allure-2.29.0.tgz
 
       - name: Generate Allure Report
         if: always()
