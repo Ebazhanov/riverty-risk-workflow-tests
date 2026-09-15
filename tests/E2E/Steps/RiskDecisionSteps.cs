@@ -1,6 +1,6 @@
 using System.Net;
 using Allure.Net.Commons;
-using FluentAssertions;
+using Shouldly;
 using Reqnroll;
 using Riverty.RiskWorkflow.Tests.Clients;
 using Riverty.RiskWorkflow.Tests.Common.Models;
@@ -45,7 +45,7 @@ public class RiskDecisionSteps
     [Then(@"the decision status should be ""(.*)""")]
     public void ThenTheDecisionStatusShouldBe(string expectedStatus)
     {
-        _lastResponse.Should().NotBeNull();
-        _lastResponse!.StatusCode.Should().Be(HttpStatusCode.Created);
+        _lastResponse.ShouldNotBeNull();
+        _lastResponse!.StatusCode.ShouldBe(HttpStatusCode.Created);
     }
 }

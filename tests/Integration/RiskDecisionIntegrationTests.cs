@@ -5,7 +5,7 @@ using Allure.NUnit;
 using Allure.NUnit.Attributes;
 using Allure.Net.Commons;
 using Dapper;
-using FluentAssertions;
+using Shouldly;
 using NUnit.Framework;
 using Riverty.RiskWorkflow.Tests.Clients;
 using Riverty.RiskWorkflow.Tests.Common.Models;
@@ -51,11 +51,11 @@ public class RiskDecisionIntegrationTests : BaseTest
 
         AllureApi.Step("Then the API creates transaction with status HTTP 201 Created", () =>
         {
-            response.StatusCode.Should().Be(HttpStatusCode.Created);
+            response.StatusCode.ShouldBe(HttpStatusCode.Created);
             using var doc = JsonDocument.Parse(jsonString);
             var root = doc.RootElement;
-            root.GetProperty("userId").GetString().Should().Be("usr_123");
-            root.GetProperty("amount").GetDecimal().Should().Be(50.00m);
+            root.GetProperty("userId").GetString().ShouldBe("usr_123");
+            root.GetProperty("amount").GetDecimal().ShouldBe(50.00m);
         });
     }
 
@@ -84,11 +84,11 @@ public class RiskDecisionIntegrationTests : BaseTest
 
         AllureApi.Step("Then the API validates high risk payload with status HTTP 201 Created", () =>
         {
-            response.StatusCode.Should().Be(HttpStatusCode.Created);
+            response.StatusCode.ShouldBe(HttpStatusCode.Created);
             using var doc = JsonDocument.Parse(jsonString);
             var root = doc.RootElement;
-            root.GetProperty("userId").GetString().Should().Be("usr_999");
-            root.GetProperty("amount").GetDecimal().Should().Be(5000.00m);
+            root.GetProperty("userId").GetString().ShouldBe("usr_999");
+            root.GetProperty("amount").GetDecimal().ShouldBe(5000.00m);
         });
     }
 
@@ -115,7 +115,7 @@ public class RiskDecisionIntegrationTests : BaseTest
 
         AllureApi.Step("Then the API responds with HTTP 201 Created despite background delay", () =>
         {
-            response.StatusCode.Should().Be(HttpStatusCode.Created);
+            response.StatusCode.ShouldBe(HttpStatusCode.Created);
         });
     }
 
@@ -149,7 +149,7 @@ public class RiskDecisionIntegrationTests : BaseTest
 
         await AllureApi.Step("Then the decision record is correctly persisted in PostgreSQL table", async () =>
         {
-            response.StatusCode.Should().Be(HttpStatusCode.Created);
+            response.StatusCode.ShouldBe(HttpStatusCode.Created);
 
             using var connection = GetDbConnection();
 
@@ -161,10 +161,10 @@ public class RiskDecisionIntegrationTests : BaseTest
                 new { UserId = "usr_db_test" }
             );
 
-            record.Should().NotBeNull();
-            record!.UserId.Should().Be("usr_db_test");
-            record.Amount.Should().Be(150.00m);
-            record.Status.Should().Be("APPROVED");
+            record.ShouldNotBeNull();
+            record!.UserId.ShouldBe("usr_db_test");
+            record.Amount.ShouldBe(150.00m);
+            record.Status.ShouldBe("APPROVED");
         });
     }
 }

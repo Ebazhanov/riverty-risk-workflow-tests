@@ -3,7 +3,7 @@ using System.Net.Http.Json;
 using Allure.NUnit;
 using Allure.NUnit.Attributes;
 using Allure.Net.Commons;
-using FluentAssertions;
+using Shouldly;
 using NUnit.Framework;
 using Riverty.RiskWorkflow.Tests.Component.Factories;
 using Riverty.RiskWorkflow.Tests.Common.Models;
@@ -47,7 +47,7 @@ public sealed class RiskDecisionComponentTests : IDisposable
 
         AllureApi.Step("Then the in-memory server responds with HTTP 201 Created", () =>
         {
-            response.StatusCode.Should().Be(HttpStatusCode.Created);
+            response.StatusCode.ShouldBe(HttpStatusCode.Created);
         });
     }
 
