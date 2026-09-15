@@ -53,7 +53,15 @@ jobs:
 
       - name: Generate Allure Report
         if: always()
-        run: allure generate **/allure-results -o allure-report --clean
+        run: |
+          # Find all allure-results directories and generate a combined report; print diagnostics if none found
+          RESULTS=$(find . -type d -name "allure-results" -print | tr '\n' ' ')
+          if [ -z "$RESULTS" ]; then
+            echo "No allure-results found"
+            exit 0
+          fi
+          echo "Found allure result dirs: $RESULTS"
+          allure generate $RESULTS -o allure-report --clean
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
