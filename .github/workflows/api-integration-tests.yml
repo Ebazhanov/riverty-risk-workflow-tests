@@ -53,7 +53,7 @@ jobs:
 
       - name: Generate Allure Report
         if: always()
-        run: allure generate bin/Release/net10.0/allure-results -o allure-report --clean
+        run: allure generate **/allure-results -o allure-report --clean
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
